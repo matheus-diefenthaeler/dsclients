@@ -1,6 +1,6 @@
 package br.com.matheus.dsclients.controller;
 
-import br.com.matheus.dsclients.entities.Client;
+import br.com.matheus.dsclients.dto.ClientDTO;
 import br.com.matheus.dsclients.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ public class ClientController {
     private ClientService service;
 
     @GetMapping
-    public ResponseEntity<List<Client>> findAll() {
-        List<Client> list = service.findAll();
+    public ResponseEntity<List<ClientDTO>> findAll() {
+        List<ClientDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 }

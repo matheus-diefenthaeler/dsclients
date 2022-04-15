@@ -25,11 +25,11 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    String name;
-    String cpf;
-    Double income;
-    Instant birtDate;
-    Integer children;
+    private String name;
+    private String cpf;
+    private Double income;
+    private Instant birtDate;
+    private Integer children;
 
     @Override
     public boolean equals(Object o) {
