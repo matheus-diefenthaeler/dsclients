@@ -3,6 +3,7 @@ package br.com.matheus.dsclients.services;
 import br.com.matheus.dsclients.dto.ClientDTO;
 import br.com.matheus.dsclients.entities.Client;
 import br.com.matheus.dsclients.respository.ClientRepository;
+import br.com.matheus.dsclients.services.exceptions.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class ClientService {
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
         Optional<Client> obj = repository.findById(id);
-        var entity = obj.get();
+        var entity = obj.orElseThrow(()-> new ClientNotFoundException("Entity not found!"));
         return new ClientDTO(entity);
     }
 }
