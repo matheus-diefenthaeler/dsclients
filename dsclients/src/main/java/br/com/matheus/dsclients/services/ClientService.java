@@ -4,7 +4,10 @@ import br.com.matheus.dsclients.dto.ClientDTO;
 import br.com.matheus.dsclients.entities.Client;
 import br.com.matheus.dsclients.respository.ClientRepository;
 import br.com.matheus.dsclients.services.exceptions.ClientNotFoundException;
+import br.com.matheus.dsclients.services.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,13 +32,13 @@ public class ClientService {
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id) {
         Optional<Client> obj = repository.findById(id);
-        var entity = obj.orElseThrow(()-> new ClientNotFoundException("Entity not found!"));
+        var entity = obj.orElseThrow(() -> new ClientNotFoundException("Entity not found!"));
         return new ClientDTO(entity);
     }
 
     @Transactional
     public ClientDTO update(Long id, ClientDTO dto) {
-        try{
+        try {
             var entity = repository.getById(id);
             entity.setName(dto.getName());
             entity.setCpf(dto.getCpf());
@@ -44,7 +47,7 @@ public class ClientService {
             entity.setIncome(dto.getIncome());
             return new ClientDTO(entity);
 
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ClientNotFoundException("Id not found! " + id);
         }
     }
@@ -59,5 +62,15 @@ public class ClientService {
         entity.setIncome(dto.getIncome());
         entity = repository.save(entity);
         return new ClientDTO(entity);
+    }
+
+    public void delete(Long id) {
+        try{
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new ClientNotFoundException("Id not found!");
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Integrity violation!");
+        }
     }
 }
