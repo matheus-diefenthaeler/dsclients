@@ -39,7 +39,7 @@ public class ClientService {
             var entity = repository.getById(id);
             entity.setName(dto.getName());
             entity.setCpf(dto.getCpf());
-            entity.setBirtDate(dto.getBirtDate());
+            entity.setBirthDate(dto.getBirthDate());
             entity.setChildren(dto.getChildren());
             entity.setIncome(dto.getIncome());
             return new ClientDTO(entity);
@@ -47,5 +47,17 @@ public class ClientService {
         }catch (EntityNotFoundException e){
             throw new ClientNotFoundException("Id not found! " + id);
         }
+    }
+
+    @Transactional
+    public ClientDTO insert(ClientDTO dto) {
+        var entity = new Client();
+        entity.setName(dto.getName());
+        entity.setCpf(dto.getCpf());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setChildren(dto.getChildren());
+        entity.setIncome(dto.getIncome());
+        entity = repository.save(entity);
+        return new ClientDTO(entity);
     }
 }

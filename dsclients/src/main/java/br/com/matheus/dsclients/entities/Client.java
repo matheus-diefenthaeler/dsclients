@@ -28,7 +28,7 @@ public class Client implements Serializable {
     private String name;
     private String cpf;
     private Double income;
-    private Instant birtDate;
+    private Instant birthDate;
     private Integer children;
 
     @Override
