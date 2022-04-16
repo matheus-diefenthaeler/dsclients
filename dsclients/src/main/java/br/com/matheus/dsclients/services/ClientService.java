@@ -5,12 +5,12 @@ import br.com.matheus.dsclients.entities.Client;
 import br.com.matheus.dsclients.respository.ClientRepository;
 import br.com.matheus.dsclients.services.exceptions.ClientNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -19,10 +19,10 @@ public class ClientService {
     private ClientRepository repository;
 
     @Transactional(readOnly = true)
-    public List<ClientDTO> findAll() {
+    public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
 
-        List<Client> list = repository.findAll();
-        return list.stream().map(x -> new ClientDTO(x)).collect(Collectors.toList());
+        Page<Client> list = repository.findAll(pageRequest);
+        return list.map(ClientDTO::new);
     }
 
     @Transactional(readOnly = true)
