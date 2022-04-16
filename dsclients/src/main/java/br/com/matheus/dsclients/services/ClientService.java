@@ -4,7 +4,6 @@ import br.com.matheus.dsclients.dto.ClientDTO;
 import br.com.matheus.dsclients.entities.Client;
 import br.com.matheus.dsclients.respository.ClientRepository;
 import br.com.matheus.dsclients.services.exceptions.ClientNotFoundException;
-import br.com.matheus.dsclients.services.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -69,8 +68,6 @@ public class ClientService {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new ClientNotFoundException("Id not found!");
-        }catch (DataIntegrityViolationException e){
-            throw new DatabaseException("Integrity violation!");
         }
     }
 }

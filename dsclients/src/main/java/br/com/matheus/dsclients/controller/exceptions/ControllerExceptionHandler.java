@@ -1,7 +1,6 @@
 package br.com.matheus.dsclients.controller.exceptions;
 
 import br.com.matheus.dsclients.services.exceptions.ClientNotFoundException;
-import br.com.matheus.dsclients.services.exceptions.DatabaseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,18 +23,6 @@ public class ControllerExceptionHandler {
         error.setTimestamp(Instant.now());
         error.setStatus(status.value());
         error.setError("Resource not found!");
-        error.setMessage(e.getMessage());
-        error.setPath(request.getRequestURI());
-        return ResponseEntity.status(status).body(error);
-    }
-
-    public ResponseEntity<StandardError> dataBase(
-            DatabaseException e, HttpServletRequest request) {
-        status = HttpStatus.BAD_REQUEST;
-        var error = new StandardError();
-        error.setTimestamp(Instant.now());
-        error.setStatus(status.value());
-        error.setError("Database Exeption");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);
